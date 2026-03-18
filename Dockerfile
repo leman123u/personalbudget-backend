@@ -1,11 +1,11 @@
-FROM openjdk:17-jdk-slim
+FROM maven:3.9-eclipse-temurin-17
 
-# 2) Builddən çıxan JAR-ı konteynerə kopyala
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} /app.jar
+WORKDIR /app
 
-# 3) Port
-EXPOSE 8081
+COPY . .
 
-# 4) Başlatma komandası
-ENTRYPOINT ["java","-jar","/app.jar"]
+RUN mvn clean package -DskipTests
+
+EXPOSE 8080
+
+CMD ["sh","-c","java -jar target/*.jar"]
